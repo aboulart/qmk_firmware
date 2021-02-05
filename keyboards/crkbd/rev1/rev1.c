@@ -1,4 +1,5 @@
 #include "crkbd.h"
+#include <string.h>
 
 
 #ifdef AUDIO_ENABLE
@@ -115,8 +116,7 @@ void led_set_kb(uint8_t usb_led) {
     { { 5 | ( 0 << 4 ) }, { 224, 24 }, 1 }, /* 26 */ \
     { { 6 | ( 0 << 4 ) }, { 224, 41 }, 1 }, /* 27 */
 
-#ifdef RGB_MATRIX_SPLIT_RIGHT
-const rgb_led g_rgb_leds[DRIVER_LED_TOTAL] = {
+static const rgb_led rgb_leds_right[DRIVER_LED_TOTAL] = {
 #if DRIVER_LED_TOTAL == 54
         RGB_MATRIX_RIGHT_LEDS_BACK
         RGB_MATRIX_RIGHT_LEDS_FRONT
@@ -132,8 +132,8 @@ const rgb_led g_rgb_leds[DRIVER_LED_TOTAL] = {
 #error Unexpected number of LEDs
 #endif
     };
-#else
-const rgb_led g_rgb_leds[DRIVER_LED_TOTAL] = {
+
+static const rgb_led rgb_leds_left[DRIVER_LED_TOTAL] = {
 #if DRIVER_LED_TOTAL == 54
         RGB_MATRIX_LEFT_LEDS_BACK
         RGB_MATRIX_LEFT_LEDS_FRONT
@@ -149,10 +149,29 @@ const rgb_led g_rgb_leds[DRIVER_LED_TOTAL] = {
 #error Unexpected number of LEDs
 #endif
     };
+
+const rgb_led g_rgb_leds[DRIVER_LED_TOTAL];
 #endif
 
-#endif
+extern uint8_t is_master;
+
 void matrix_init_kb(void) {
+
+#ifdef RGB_MATRIX_ENABLE
+
+    #ifdef MASTER_RIGHT
+        if (is_master)
+            memcpy((rgb_led*)g_rgb_leds, rgb_leds_right, sizeof(g_rgb_leds));
+        else
+            memcpy((rgb_led*)g_rgb_leds, rgb_leds_left, sizeof(g_rgb_leds));
+    #else
+        if (is_master)
+            memcpy((rgb_led*)g_rgb_leds, rgb_leds_left, sizeof(g_rgb_leds));
+        else
+            memcpy((rgb_led*)g_rgb_leds, rgb_leds_right, sizeof(g_rgb_leds));
+    #endif
+
+#endif
 
     #ifdef AUDIO_ENABLE
         _delay_ms(20); // gets rid of tick
