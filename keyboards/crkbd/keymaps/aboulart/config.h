@@ -57,6 +57,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DISABLE_RGB_MATRIX_SPLASH
 #define DISABLE_RGB_MATRIX_SOLID_SPLASH
 
+#define DISABLE_RGB_MATRIX_MULTISPLASH
+#define DISABLE_RGB_MATRIX_SOLID_MULTISPLASH
+
 // #define CONSOLE_ENABLE
 // #undef NO_PRINT
 // #undef NO_DEBUG

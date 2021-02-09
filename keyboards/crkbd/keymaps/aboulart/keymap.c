@@ -21,12 +21,16 @@ enum custom_layers {
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   RGBRST,
-  RGBMOI,
-  RGBMOD
 };
 
-enum macro_keycodes {
-  KC_SAMPLEMACRO,
+enum tap_dance_codes {
+  TD_LCTRL = 0,
+  TD_RCTRL
+};
+
+qk_tap_dance_action_t tap_dance_actions[2] = {
+  [TD_LCTRL]  = ACTION_TAP_DANCE_DOUBLE(KC_LCTRL, KC_LALT),
+  [TD_RCTRL]  = ACTION_TAP_DANCE_DOUBLE(KC_RCTRL, KC_RALT),
 };
 
 #define KC______ KC_TRNS
@@ -45,21 +49,21 @@ enum macro_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT( \
-    KC_LGUI,KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LALT,\
-    KC_LCTRL,KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L,KC_SCOLON,KC_RCTRL,\
+    KC_LGUI,KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_RGUI,\
+    TD(TD_LCTRL),KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L,KC_SCOLON,TD(TD_RCTRL),\
     KC_LSHIFT,KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMMA,KC_DOT,KC_SLASH,KC_RSHIFT,\
         MO(_RAISE),KC_SPACE,LSFT_T(KC_TAB),
         RSFT_T(KC_BSPACE),KC_ENTER,MO(_LOWER)\
   ),
 
   [_LOWER] = LAYOUT( \
-    KC_GRAVE,LSFT(KC_1),LSFT(KC_2),LSFT(KC_3),LSFT(KC_4),LSFT(KC_5),\
+    KC_TRANSPARENT,LSFT(KC_1),LSFT(KC_2),LSFT(KC_3),LSFT(KC_4),LSFT(KC_5),\
       KC_0,KC_1,KC_2,KC_3,LSFT(KC_RBRACKET),KC_TRANSPARENT,\
     KC_TRANSPARENT,LSFT(KC_MINUS),LSFT(KC_EQUAL),KC_LPRN,KC_RPRN,KC_LBRACKET,\
       KC_E,KC_4,KC_5,KC_6,KC_QUOTE,KC_TRANSPARENT,\
     KC_TRANSPARENT,LSFT(KC_LBRACKET),KC_AMPR,KC_MINUS,KC_EQUAL,KC_TILD,\
       KC_RBRACKET,KC_7,KC_8,KC_9,KC_ASTR,KC_TRANSPARENT,\
-        MO(_ADJUST),KC_LGUI,KC_TRANSPARENT,\
+        MO(_ADJUST),KC_TRANSPARENT,KC_TRANSPARENT,\
         KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT\
   ),
 
@@ -76,11 +80,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ADJUST] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        RST, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                  F10,   F1,    F2,    F3,    XXXXX, XXXXX,\
+        GRAVE, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                  F10,   F1,    F2,    F3,    XXXXX, RST,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LTOG,  LHUI,  LSAI,  LVAI,  LMOI,  BRIU,                  F11,   F4,    F5,    F6, QUOTE | QK_LSFT, XXXXX,\
+      XXXXX,  LHUI,  LSAI,  LVAI,  LMOI,  LTOG,                  F11,   F4,    F5,    F6, QUOTE | QK_LSFT, XXXXX,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LRST,  LHUD,  LSAD,  LVAD,  LMOD,  BRID,                  F12,   F7,    F8,    F9,    XXXXX, XXXXX,\
+      XXXXX,  LHUD,  LSAD,  LVAD,  LMOD,  LRST,                  F12,   F7,    F8,    F9,    XXXXX, XXXXX,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
             XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX
   )
